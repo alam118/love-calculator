@@ -13,7 +13,6 @@ body {
     align-items: center;
     min-height: 100vh;
     padding: 10px;
-    overflow: hidden;
 }
 
 /* ===== SPLASH SCREEN ===== */
@@ -28,12 +27,11 @@ body {
     justify-content: center;
     align-items: center;
     z-index: 9999;
-    transition: opacity 0.8s ease, transform 0.8s ease;
+    transition: opacity 0.8s ease;
 }
 
 .splash-screen.hide {
     opacity: 0;
-    transform: scale(1.1);
     pointer-events: none;
 }
 
@@ -67,7 +65,6 @@ body {
     color: rgba(255, 255, 255, 0.2);
     font-size: 0.8rem;
     margin-top: 20px;
-    letter-spacing: 2px;
 }
 
 .splash-loader {
@@ -110,18 +107,18 @@ body {
     width: 100%;
     max-width: 420px;
     height: 780px;
-    background: var(--bg-primary, linear-gradient(180deg, #1a0a1a, #0d0d0d));
+    background: var(--bg-primary, #0d0d0d);
     border-radius: 40px;
     overflow: hidden;
     box-shadow: 0 30px 80px rgba(255, 45, 85, 0.2), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
-    position: relative;
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 
 /* ===== THEME VARIABLES ===== */
 :root {
-    --bg-primary: linear-gradient(180deg, #1a0a1a, #0d0d0d);
+    --bg-primary: #0d0d0d;
     --bg-card: rgba(255, 255, 255, 0.05);
     --text-primary: #ffffff;
     --text-secondary: rgba(255, 255, 255, 0.5);
@@ -132,28 +129,28 @@ body {
 }
 
 [data-theme="blue"] {
-    --bg-primary: linear-gradient(180deg, #0a0a1a, #0d0d2d);
+    --bg-primary: #0d0d2d;
     --gradient-start: #2d55ff;
     --gradient-end: #6b9dff;
     --shadow-color: rgba(45, 85, 255, 0.3);
 }
 
 [data-theme="green"] {
-    --bg-primary: linear-gradient(180deg, #0a1a0a, #0d2d0d);
+    --bg-primary: #0d2d0d;
     --gradient-start: #2dff55;
     --gradient-end: #6bff9d;
     --shadow-color: rgba(45, 255, 85, 0.3);
 }
 
 [data-theme="purple"] {
-    --bg-primary: linear-gradient(180deg, #1a0a2d, #2d0d4a);
+    --bg-primary: #1a0a2d;
     --gradient-start: #9d2dff;
     --gradient-end: #c96bff;
     --shadow-color: rgba(157, 45, 255, 0.3);
 }
 
 [data-theme="gold"] {
-    --bg-primary: linear-gradient(180deg, #1a150a, #2d200d);
+    --bg-primary: #1a150a;
     --gradient-start: #ff9d2d;
     --gradient-end: #ffc96b;
     --shadow-color: rgba(255, 157, 45, 0.3);
@@ -164,10 +161,11 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 24px 10px;
-    background: rgba(255, 255, 255, 0.03);
+    padding: 16px 20px 10px;
+    background: var(--bg-primary);
     border-bottom: 1px solid var(--border-color);
     flex-shrink: 0;
+    z-index: 10;
 }
 
 .header-left {
@@ -219,18 +217,29 @@ body {
     font-weight: 500;
 }
 
+/* ===== SCROLLABLE CONTENT ===== */
+.scrollable-content {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 0 20px 80px;
+    background: var(--bg-primary);
+    scroll-behavior: smooth;
+}
+
+.scrollable-content::-webkit-scrollbar {
+    width: 0;
+}
+
 /* ===== SCREENS ===== */
 .screen {
     display: none;
-    flex: 1;
-    overflow-y: auto;
-    padding: 0 20px 20px;
-    scrollbar-width: none;
+    padding: 10px 0 20px;
 }
 
-.screen::-webkit-scrollbar { display: none; }
-
-.screen.active { display: block; }
+.screen.active {
+    display: block;
+}
 
 /* ===== HOME SCREEN ===== */
 .home-welcome {
@@ -276,12 +285,12 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, rgba(255, 45, 85, 0.1), transparent);
+    background: linear-gradient(135deg, var(--gradient-start), transparent);
     opacity: 0;
     transition: 0.3s;
 }
 
-.menu-btn:hover::before { opacity: 1; }
+.menu-btn:hover::before { opacity: 0.1; }
 
 .menu-btn:hover {
     transform: translateY(-4px);
@@ -303,7 +312,6 @@ body {
     border-radius: 20px;
     margin-top: 6px;
     font-weight: 700;
-    letter-spacing: 0.5px;
 }
 
 .home-footer {
@@ -311,27 +319,25 @@ body {
     padding: 20px 0 10px;
     color: var(--text-secondary);
     font-size: 0.8rem;
-    letter-spacing: 1px;
     opacity: 0.3;
 }
 
 /* ===== CALCULATOR SCREENS ===== */
 .calculator-screen {
-    padding-top: 0;
-    padding-bottom: 80px;
+    padding: 0;
 }
 
 .screen-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 0 20px;
-    background: var(--bg-primary);
-    border-bottom: 1px solid var(--border-color);
+    padding: 10px 0 15px;
     margin-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
     position: sticky;
     top: 0;
-    z-index: 10;
+    background: var(--bg-primary);
+    z-index: 5;
 }
 
 .screen-header h3 {
@@ -341,23 +347,22 @@ body {
 }
 
 .back-btn, .share-btn-small {
-    background: none;
-    border: none;
-    color: var(--gradient-start);
-    font-size: 1.3rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
     cursor: pointer;
-    padding: 0 5px;
+    color: var(--text-primary);
+    font-size: 1.1rem;
     transition: 0.3s;
-    width: 36px;
-    height: 36px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 50%;
 }
 
 .back-btn:hover, .share-btn-small:hover {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.1);
     transform: scale(1.1);
 }
 
@@ -373,7 +378,6 @@ body {
     font-size: 0.8rem;
     font-weight: 600;
     margin-bottom: 6px;
-    letter-spacing: 0.5px;
 }
 
 .input-group input {
@@ -391,10 +395,13 @@ body {
 .input-group input:focus {
     border-color: var(--gradient-start);
     background: rgba(255, 45, 85, 0.05);
-    box-shadow: 0 0 25px rgba(255, 45, 85, 0.1);
+    box-shadow: 0 0 25px var(--shadow-color);
 }
 
-.input-group input::placeholder { color: var(--text-secondary); opacity: 0.3; }
+.input-group input::placeholder {
+    color: var(--text-secondary);
+    opacity: 0.3;
+}
 
 /* ===== CALCULATE BUTTON ===== */
 .calc-btn {
@@ -428,12 +435,7 @@ body {
     padding: 25px 20px;
     text-align: center;
     transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    min-height: 160px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: relative;
+    min-height: 150px;
 }
 
 .result-box.pop {
@@ -461,7 +463,6 @@ body {
     font-size: 1.1rem;
     font-weight: 700;
     margin: 4px 0;
-    -webkit-text-fill-color: var(--text-primary);
 }
 
 .result-sub {
@@ -481,7 +482,7 @@ body {
     font-weight: 600;
     cursor: pointer;
     transition: 0.3s;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 8px;
 }
@@ -496,14 +497,14 @@ body {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(20px);
+    background: var(--bg-primary);
     border-top: 1px solid var(--border-color);
-    padding: 8px 5px 10px;
+    padding: 6px 5px 10px;
     flex-shrink: 0;
     position: sticky;
     bottom: 0;
     z-index: 100;
+    backdrop-filter: blur(20px);
 }
 
 .nav-btn {
@@ -517,8 +518,8 @@ body {
     cursor: pointer;
     padding: 4px 8px;
     transition: 0.3s;
-    font-size: 0.65rem;
-    min-width: 44px;
+    font-size: 0.6rem;
+    min-width: 40px;
 }
 
 .nav-btn i {
@@ -527,7 +528,7 @@ body {
 }
 
 .nav-btn span {
-    font-size: 0.55rem;
+    font-size: 0.5rem;
     font-weight: 500;
 }
 
@@ -559,7 +560,7 @@ body {
     100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
 }
 
-/* ===== TOAST NOTIFICATION ===== */
+/* ===== TOAST ===== */
 .toast {
     position: fixed;
     bottom: 100px;
@@ -576,9 +577,9 @@ body {
     opacity: 0;
     transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    max-width: 90%;
+    text-align: center;
+    pointer-events: none;
 }
 
 .toast.show {
@@ -597,9 +598,10 @@ body {
     .button-grid { gap: 10px; }
     .menu-btn { padding: 16px 10px; }
     .btn-icon { font-size: 26px; }
-    .bottom-nav { padding: 6px 2px 8px; }
-    .nav-btn { min-width: 36px; font-size: 0.55rem; }
+    .bottom-nav { padding: 4px 2px 8px; }
+    .nav-btn { min-width: 34px; }
     .nav-btn i { font-size: 1rem; }
+    .nav-btn span { font-size: 0.45rem; }
 }
 
 @media (min-width: 441px) and (max-height: 800px) {
