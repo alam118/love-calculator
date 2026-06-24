@@ -298,4 +298,10 @@ document.querySelectorAll('.input-group input').forEach(input => {
 // ============================================
 // MOBILE NUMBER AUTO-FORMAT
 // ============================================
-document.querySelectorAll('input[type="tel"]').forEach(input =>
+document.querySelectorAll('input[type="tel"]').forEach(input => {
+    input.addEventListener('input', () => {
+        input.value = input.value.replace(/\D/g, '').slice(0, 10);
+    });
+});
+
+console.log('💕 Love Calculator Suite loaded! Made with ❤️');
