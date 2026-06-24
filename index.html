@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>💕 Love Calculator</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>💖 Love Calculator</h1>
+            <p>by Names</p>
+        </div>
+
+        <!-- Name Input Section -->
+        <div class="input-section">
+            <div class="name-box">
+                <label>👨 Your Name</label>
+                <input type="text" id="name1" placeholder="e.g. JAMES" value="JAMES" />
+            </div>
+            <div class="heart-divider">❤️</div>
+            <div class="name-box">
+                <label>👩 Partner's Name</label>
+                <input type="text" id="name2" placeholder="e.g. CHARLOTTE" value="CHARLOTTE" />
+            </div>
+        </div>
+
+        <!-- Calculate Button -->
+        <button id="calculateBtn">✨ CALCULATE ✨</button>
+
+        <!-- Result Section -->
+        <div class="result-section" id="resultSection">
+            <div class="percentage-circle">
+                <svg viewBox="0 0 120 120">
+                    <circle class="bg-circle" cx="60" cy="60" r="50" />
+                    <circle class="progress-circle" id="progressCircle" cx="60" cy="60" r="50" />
+                    <text class="percent-text" id="percentText" x="60" y="60" text-anchor="middle" dominant-baseline="central">0%</text>
+                </svg>
+            </div>
+            <div class="love-message" id="loveMessage">
+                💕 Enter both names to see the magic!
+            </div>
+            <div class="love-sub-message" id="loveSubMessage">
+                Your love story starts here...
+            </div>
+        </div>
+
+        <!-- Share & Extra Features -->
+        <div class="extra-features">
+            <button class="share-btn" id="shareBtn">📤 Share Result</button>
+            <button class="reset-btn" id="resetBtn">🔄 Reset</button>
+        </div>
+
+        <!-- Love Quotes / Random Feature -->
+        <div class="quote-section" id="quoteSection">
+            <p id="quoteText">💬 "Love is when the other person's happiness is more important than your own."</p>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>Made with ❤️ | Love Calculator 2026</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
