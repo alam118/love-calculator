@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>💕 Love Calculator Suite</title>
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
 <body>
 
@@ -17,6 +18,7 @@
             <div class="splash-loader">
                 <div class="loader-bar"></div>
             </div>
+            <div class="splash-version">v3.0</div>
         </div>
     </div>
 
@@ -30,6 +32,9 @@
                 <span class="app-title">Love Suite</span>
             </div>
             <div class="header-right">
+                <button class="theme-toggle" id="themeToggle" title="Change Theme">
+                    <i class="fas fa-palette"></i>
+                </button>
                 <span id="currentTime" class="time">12:00</span>
             </div>
         </div>
@@ -87,9 +92,9 @@
         <!-- Screen 1: Love by Name -->
         <div id="screen-name" class="screen calculator-screen">
             <div class="screen-header">
-                <button class="back-btn" data-back="home">‹</button>
+                <button class="back-btn" data-back="home"><i class="fas fa-arrow-left"></i></button>
                 <h3>💑 Love by Name</h3>
-                <span></span>
+                <button class="share-btn-small" onclick="shareResult('name')"><i class="fas fa-share-alt"></i></button>
             </div>
             <div class="calc-body">
                 <div class="input-group">
@@ -105,6 +110,9 @@
                     <div class="result-percent">0%</div>
                     <div class="result-message">Enter names to see the magic ✨</div>
                     <div class="result-sub">💕 Love is in the air...</div>
+                    <button class="share-result-btn" onclick="shareResult('name')" style="display:none;">
+                        <i class="fas fa-share-alt"></i> Share Result
+                    </button>
                 </div>
             </div>
         </div>
@@ -112,9 +120,9 @@
         <!-- Screen 2: Love by DOB -->
         <div id="screen-dob" class="screen calculator-screen">
             <div class="screen-header">
-                <button class="back-btn" data-back="home">‹</button>
+                <button class="back-btn" data-back="home"><i class="fas fa-arrow-left"></i></button>
                 <h3>🎂 Love by DOB</h3>
-                <span></span>
+                <button class="share-btn-small" onclick="shareResult('dob')"><i class="fas fa-share-alt"></i></button>
             </div>
             <div class="calc-body">
                 <div class="input-group">
@@ -130,6 +138,9 @@
                     <div class="result-percent">0%</div>
                     <div class="result-message">Select dates to calculate</div>
                     <div class="result-sub">💕 Destiny awaits...</div>
+                    <button class="share-result-btn" onclick="shareResult('dob')" style="display:none;">
+                        <i class="fas fa-share-alt"></i> Share Result
+                    </button>
                 </div>
             </div>
         </div>
@@ -137,9 +148,9 @@
         <!-- Screen 3: Friendship -->
         <div id="screen-friendship" class="screen calculator-screen">
             <div class="screen-header">
-                <button class="back-btn" data-back="home">‹</button>
+                <button class="back-btn" data-back="home"><i class="fas fa-arrow-left"></i></button>
                 <h3>🤝 Friendship</h3>
-                <span></span>
+                <button class="share-btn-small" onclick="shareResult('friendship')"><i class="fas fa-share-alt"></i></button>
             </div>
             <div class="calc-body">
                 <div class="input-group">
@@ -155,6 +166,9 @@
                     <div class="result-percent">0%</div>
                     <div class="result-message">Enter names to check friendship</div>
                     <div class="result-sub">🤗 Best friends forever...</div>
+                    <button class="share-result-btn" onclick="shareResult('friendship')" style="display:none;">
+                        <i class="fas fa-share-alt"></i> Share Result
+                    </button>
                 </div>
             </div>
         </div>
@@ -162,9 +176,9 @@
         <!-- Screen 4: Marriage -->
         <div id="screen-marriage" class="screen calculator-screen">
             <div class="screen-header">
-                <button class="back-btn" data-back="home">‹</button>
+                <button class="back-btn" data-back="home"><i class="fas fa-arrow-left"></i></button>
                 <h3>💍 Marriage</h3>
-                <span></span>
+                <button class="share-btn-small" onclick="shareResult('marriage')"><i class="fas fa-share-alt"></i></button>
             </div>
             <div class="calc-body">
                 <div class="input-group">
@@ -180,6 +194,9 @@
                     <div class="result-percent">0%</div>
                     <div class="result-message">Enter names to check compatibility</div>
                     <div class="result-sub">💞 Soulmates...</div>
+                    <button class="share-result-btn" onclick="shareResult('marriage')" style="display:none;">
+                        <i class="fas fa-share-alt"></i> Share Result
+                    </button>
                 </div>
             </div>
         </div>
@@ -187,9 +204,9 @@
         <!-- Screen 5: Love by Mobile -->
         <div id="screen-mobile" class="screen calculator-screen">
             <div class="screen-header">
-                <button class="back-btn" data-back="home">‹</button>
+                <button class="back-btn" data-back="home"><i class="fas fa-arrow-left"></i></button>
                 <h3>📱 Love by Mobile</h3>
-                <span></span>
+                <button class="share-btn-small" onclick="shareResult('mobile')"><i class="fas fa-share-alt"></i></button>
             </div>
             <div class="calc-body">
                 <div class="input-group">
@@ -205,8 +222,39 @@
                     <div class="result-percent">0%</div>
                     <div class="result-message">Enter mobile numbers</div>
                     <div class="result-sub">📱 Digital love...</div>
+                    <button class="share-result-btn" onclick="shareResult('mobile')" style="display:none;">
+                        <i class="fas fa-share-alt"></i> Share Result
+                    </button>
                 </div>
             </div>
+        </div>
+
+        <!-- ===== BOTTOM NAVIGATION ===== -->
+        <div class="bottom-nav">
+            <button class="nav-btn active" data-screen="home" title="Home">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </button>
+            <button class="nav-btn" data-screen="name" title="Name">
+                <i class="fas fa-user"></i>
+                <span>Name</span>
+            </button>
+            <button class="nav-btn" data-screen="dob" title="DOB">
+                <i class="fas fa-calendar"></i>
+                <span>DOB</span>
+            </button>
+            <button class="nav-btn" data-screen="friendship" title="Friend">
+                <i class="fas fa-handshake"></i>
+                <span>Friend</span>
+            </button>
+            <button class="nav-btn" data-screen="marriage" title="Marriage">
+                <i class="fas fa-ring"></i>
+                <span>Marriage</span>
+            </button>
+            <button class="nav-btn" data-screen="mobile" title="Mobile">
+                <i class="fas fa-phone"></i>
+                <span>Mobile</span>
+            </button>
         </div>
 
     </div>
