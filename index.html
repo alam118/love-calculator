@@ -39,194 +39,174 @@
             </div>
         </div>
 
-        <!-- ===== HOME SCREEN ===== -->
-        <div id="homeScreen" class="screen active">
-            <div class="home-welcome">
-                <h2>✨ Welcome to Love Suite</h2>
-                <p>Choose your love calculator</p>
-            </div>
+        <!-- ===== SCROLLABLE CONTENT ===== -->
+        <div class="scrollable-content" id="scrollableContent">
 
-            <div class="button-grid">
-                <!-- Button 1: Love by Name -->
-                <div class="menu-btn" data-screen="name">
-                    <div class="btn-icon">💑</div>
-                    <div class="btn-text">Love by Name</div>
-                    <div class="btn-badge">Popular</div>
+            <!-- ===== HOME SCREEN ===== -->
+            <div id="homeScreen" class="screen active">
+                <div class="home-welcome">
+                    <h2>✨ Welcome to Love Suite</h2>
+                    <p>Choose your love calculator</p>
                 </div>
 
-                <!-- Button 2: Love by DOB -->
-                <div class="menu-btn" data-screen="dob">
-                    <div class="btn-icon">🎂</div>
-                    <div class="btn-text">Love by DOB</div>
-                    <div class="btn-badge">New</div>
+                <div class="button-grid">
+                    <div class="menu-btn" data-screen="name">
+                        <div class="btn-icon">💑</div>
+                        <div class="btn-text">Love by Name</div>
+                        <div class="btn-badge">Popular</div>
+                    </div>
+                    <div class="menu-btn" data-screen="dob">
+                        <div class="btn-icon">🎂</div>
+                        <div class="btn-text">Love by DOB</div>
+                        <div class="btn-badge">New</div>
+                    </div>
+                    <div class="menu-btn" data-screen="friendship">
+                        <div class="btn-icon">🤝</div>
+                        <div class="btn-text">Friendship</div>
+                        <div class="btn-badge">Best</div>
+                    </div>
+                    <div class="menu-btn" data-screen="marriage">
+                        <div class="btn-icon">💍</div>
+                        <div class="btn-text">Marriage</div>
+                        <div class="btn-badge">Destiny</div>
+                    </div>
+                    <div class="menu-btn" data-screen="mobile">
+                        <div class="btn-icon">📱</div>
+                        <div class="btn-text">Love by Mobile</div>
+                        <div class="btn-badge">Fun</div>
+                    </div>
                 </div>
 
-                <!-- Button 3: Friendship -->
-                <div class="menu-btn" data-screen="friendship">
-                    <div class="btn-icon">🤝</div>
-                    <div class="btn-text">Friendship</div>
-                    <div class="btn-badge">Best</div>
-                </div>
-
-                <!-- Button 4: Marriage -->
-                <div class="menu-btn" data-screen="marriage">
-                    <div class="btn-icon">💍</div>
-                    <div class="btn-text">Marriage</div>
-                    <div class="btn-badge">Destiny</div>
-                </div>
-
-                <!-- Button 5: Love by Mobile -->
-                <div class="menu-btn" data-screen="mobile">
-                    <div class="btn-icon">📱</div>
-                    <div class="btn-text">Love by Mobile</div>
-                    <div class="btn-badge">Fun</div>
+                <div class="home-footer">
+                    <p>❤️ Made with Love ❤️</p>
                 </div>
             </div>
 
-            <div class="home-footer">
-                <p>❤️ Made with Love ❤️</p>
+            <!-- ===== SCREEN 1: LOVE BY NAME ===== -->
+            <div id="screen-name" class="screen calculator-screen">
+                <div class="screen-header">
+                    <button class="back-btn" data-back="home"><i class="fas fa-arrow-left"></i></button>
+                    <h3>💑 Love by Name</h3>
+                    <button class="share-btn-small" onclick="shareResult('name')"><i class="fas fa-share-alt"></i></button>
+                </div>
+                <div class="calc-body">
+                    <div class="input-group">
+                        <label>👨 Your Name</label>
+                        <input type="text" id="name1" placeholder="Enter your name" value="JAMES" />
+                    </div>
+                    <div class="input-group">
+                        <label>👩 Partner's Name</label>
+                        <input type="text" id="name2" placeholder="Enter partner's name" value="CHARLOTTE" />
+                    </div>
+                    <button class="calc-btn" onclick="calculateByName()">💖 Calculate Love</button>
+                    <div class="result-box" id="resultName">
+                        <div class="result-percent">0%</div>
+                        <div class="result-message">Enter names to see the magic ✨</div>
+                        <div class="result-sub">💕 Love is in the air...</div>
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <!-- ===== CALCULATOR SCREENS ===== -->
-        <!-- Screen 1: Love by Name -->
-        <div id="screen-name" class="screen calculator-screen">
-            <div class="screen-header">
-                <button class="back-btn" data-back="home"><i class="fas fa-arrow-left"></i></button>
-                <h3>💑 Love by Name</h3>
-                <button class="share-btn-small" onclick="shareResult('name')"><i class="fas fa-share-alt"></i></button>
-            </div>
-            <div class="calc-body">
-                <div class="input-group">
-                    <label>👨 Your Name</label>
-                    <input type="text" id="name1" placeholder="Enter your name" />
+            <!-- ===== SCREEN 2: LOVE BY DOB ===== -->
+            <div id="screen-dob" class="screen calculator-screen">
+                <div class="screen-header">
+                    <button class="back-btn" data-back="home"><i class="fas fa-arrow-left"></i></button>
+                    <h3>🎂 Love by DOB</h3>
+                    <button class="share-btn-small" onclick="shareResult('dob')"><i class="fas fa-share-alt"></i></button>
                 </div>
-                <div class="input-group">
-                    <label>👩 Partner's Name</label>
-                    <input type="text" id="name2" placeholder="Enter partner's name" />
-                </div>
-                <button class="calc-btn" onclick="calculateByName()">💖 Calculate Love</button>
-                <div class="result-box" id="resultName">
-                    <div class="result-percent">0%</div>
-                    <div class="result-message">Enter names to see the magic ✨</div>
-                    <div class="result-sub">💕 Love is in the air...</div>
-                    <button class="share-result-btn" onclick="shareResult('name')" style="display:none;">
-                        <i class="fas fa-share-alt"></i> Share Result
-                    </button>
+                <div class="calc-body">
+                    <div class="input-group">
+                        <label>🎂 Your DOB</label>
+                        <input type="date" id="dob1" />
+                    </div>
+                    <div class="input-group">
+                        <label>🎂 Partner's DOB</label>
+                        <input type="date" id="dob2" />
+                    </div>
+                    <button class="calc-btn" onclick="calculateByDOB()">💖 Calculate Love</button>
+                    <div class="result-box" id="resultDob">
+                        <div class="result-percent">0%</div>
+                        <div class="result-message">Select dates to calculate</div>
+                        <div class="result-sub">💕 Destiny awaits...</div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Screen 2: Love by DOB -->
-        <div id="screen-dob" class="screen calculator-screen">
-            <div class="screen-header">
-                <button class="back-btn" data-back="home"><i class="fas fa-arrow-left"></i></button>
-                <h3>🎂 Love by DOB</h3>
-                <button class="share-btn-small" onclick="shareResult('dob')"><i class="fas fa-share-alt"></i></button>
-            </div>
-            <div class="calc-body">
-                <div class="input-group">
-                    <label>🎂 Your DOB</label>
-                    <input type="date" id="dob1" />
+            <!-- ===== SCREEN 3: FRIENDSHIP ===== -->
+            <div id="screen-friendship" class="screen calculator-screen">
+                <div class="screen-header">
+                    <button class="back-btn" data-back="home"><i class="fas fa-arrow-left"></i></button>
+                    <h3>🤝 Friendship</h3>
+                    <button class="share-btn-small" onclick="shareResult('friendship')"><i class="fas fa-share-alt"></i></button>
                 </div>
-                <div class="input-group">
-                    <label>🎂 Partner's DOB</label>
-                    <input type="date" id="dob2" />
-                </div>
-                <button class="calc-btn" onclick="calculateByDOB()">💖 Calculate Love</button>
-                <div class="result-box" id="resultDob">
-                    <div class="result-percent">0%</div>
-                    <div class="result-message">Select dates to calculate</div>
-                    <div class="result-sub">💕 Destiny awaits...</div>
-                    <button class="share-result-btn" onclick="shareResult('dob')" style="display:none;">
-                        <i class="fas fa-share-alt"></i> Share Result
-                    </button>
+                <div class="calc-body">
+                    <div class="input-group">
+                        <label>👤 Your Name</label>
+                        <input type="text" id="friend1" placeholder="Enter your name" />
+                    </div>
+                    <div class="input-group">
+                        <label>👤 Friend's Name</label>
+                        <input type="text" id="friend2" placeholder="Enter friend's name" />
+                    </div>
+                    <button class="calc-btn" onclick="calculateFriendship()">🤝 Check Friendship</button>
+                    <div class="result-box" id="resultFriendship">
+                        <div class="result-percent">0%</div>
+                        <div class="result-message">Enter names to check friendship</div>
+                        <div class="result-sub">🤗 Best friends forever...</div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Screen 3: Friendship -->
-        <div id="screen-friendship" class="screen calculator-screen">
-            <div class="screen-header">
-                <button class="back-btn" data-back="home"><i class="fas fa-arrow-left"></i></button>
-                <h3>🤝 Friendship</h3>
-                <button class="share-btn-small" onclick="shareResult('friendship')"><i class="fas fa-share-alt"></i></button>
-            </div>
-            <div class="calc-body">
-                <div class="input-group">
-                    <label>👤 Your Name</label>
-                    <input type="text" id="friend1" placeholder="Enter your name" />
+            <!-- ===== SCREEN 4: MARRIAGE ===== -->
+            <div id="screen-marriage" class="screen calculator-screen">
+                <div class="screen-header">
+                    <button class="back-btn" data-back="home"><i class="fas fa-arrow-left"></i></button>
+                    <h3>💍 Marriage</h3>
+                    <button class="share-btn-small" onclick="shareResult('marriage')"><i class="fas fa-share-alt"></i></button>
                 </div>
-                <div class="input-group">
-                    <label>👤 Friend's Name</label>
-                    <input type="text" id="friend2" placeholder="Enter friend's name" />
-                </div>
-                <button class="calc-btn" onclick="calculateFriendship()">🤝 Check Friendship</button>
-                <div class="result-box" id="resultFriendship">
-                    <div class="result-percent">0%</div>
-                    <div class="result-message">Enter names to check friendship</div>
-                    <div class="result-sub">🤗 Best friends forever...</div>
-                    <button class="share-result-btn" onclick="shareResult('friendship')" style="display:none;">
-                        <i class="fas fa-share-alt"></i> Share Result
-                    </button>
+                <div class="calc-body">
+                    <div class="input-group">
+                        <label>👨 Groom's Name</label>
+                        <input type="text" id="marry1" placeholder="Enter groom's name" />
+                    </div>
+                    <div class="input-group">
+                        <label>👩 Bride's Name</label>
+                        <input type="text" id="marry2" placeholder="Enter bride's name" />
+                    </div>
+                    <button class="calc-btn" onclick="calculateMarriage()">💍 Check Compatibility</button>
+                    <div class="result-box" id="resultMarriage">
+                        <div class="result-percent">0%</div>
+                        <div class="result-message">Enter names to check compatibility</div>
+                        <div class="result-sub">💞 Soulmates...</div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Screen 4: Marriage -->
-        <div id="screen-marriage" class="screen calculator-screen">
-            <div class="screen-header">
-                <button class="back-btn" data-back="home"><i class="fas fa-arrow-left"></i></button>
-                <h3>💍 Marriage</h3>
-                <button class="share-btn-small" onclick="shareResult('marriage')"><i class="fas fa-share-alt"></i></button>
-            </div>
-            <div class="calc-body">
-                <div class="input-group">
-                    <label>👨 Groom's Name</label>
-                    <input type="text" id="marry1" placeholder="Enter groom's name" />
+            <!-- ===== SCREEN 5: LOVE BY MOBILE ===== -->
+            <div id="screen-mobile" class="screen calculator-screen">
+                <div class="screen-header">
+                    <button class="back-btn" data-back="home"><i class="fas fa-arrow-left"></i></button>
+                    <h3>📱 Love by Mobile</h3>
+                    <button class="share-btn-small" onclick="shareResult('mobile')"><i class="fas fa-share-alt"></i></button>
                 </div>
-                <div class="input-group">
-                    <label>👩 Bride's Name</label>
-                    <input type="text" id="marry2" placeholder="Enter bride's name" />
-                </div>
-                <button class="calc-btn" onclick="calculateMarriage()">💍 Check Compatibility</button>
-                <div class="result-box" id="resultMarriage">
-                    <div class="result-percent">0%</div>
-                    <div class="result-message">Enter names to check compatibility</div>
-                    <div class="result-sub">💞 Soulmates...</div>
-                    <button class="share-result-btn" onclick="shareResult('marriage')" style="display:none;">
-                        <i class="fas fa-share-alt"></i> Share Result
-                    </button>
+                <div class="calc-body">
+                    <div class="input-group">
+                        <label>📱 Your Mobile No.</label>
+                        <input type="tel" id="mobile1" placeholder="Enter your mobile" maxlength="10" />
+                    </div>
+                    <div class="input-group">
+                        <label>📱 Partner's Mobile No.</label>
+                        <input type="tel" id="mobile2" placeholder="Enter partner's mobile" maxlength="10" />
+                    </div>
+                    <button class="calc-btn" onclick="calculateByMobile()">💖 Calculate Love</button>
+                    <div class="result-box" id="resultMobile">
+                        <div class="result-percent">0%</div>
+                        <div class="result-message">Enter mobile numbers</div>
+                        <div class="result-sub">📱 Digital love...</div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Screen 5: Love by Mobile -->
-        <div id="screen-mobile" class="screen calculator-screen">
-            <div class="screen-header">
-                <button class="back-btn" data-back="home"><i class="fas fa-arrow-left"></i></button>
-                <h3>📱 Love by Mobile</h3>
-                <button class="share-btn-small" onclick="shareResult('mobile')"><i class="fas fa-share-alt"></i></button>
-            </div>
-            <div class="calc-body">
-                <div class="input-group">
-                    <label>📱 Your Mobile No.</label>
-                    <input type="tel" id="mobile1" placeholder="Enter your mobile" maxlength="10" />
-                </div>
-                <div class="input-group">
-                    <label>📱 Partner's Mobile No.</label>
-                    <input type="tel" id="mobile2" placeholder="Enter partner's mobile" maxlength="10" />
-                </div>
-                <button class="calc-btn" onclick="calculateByMobile()">💖 Calculate Love</button>
-                <div class="result-box" id="resultMobile">
-                    <div class="result-percent">0%</div>
-                    <div class="result-message">Enter mobile numbers</div>
-                    <div class="result-sub">📱 Digital love...</div>
-                    <button class="share-result-btn" onclick="shareResult('mobile')" style="display:none;">
-                        <i class="fas fa-share-alt"></i> Share Result
-                    </button>
-                </div>
-            </div>
         </div>
 
         <!-- ===== BOTTOM NAVIGATION ===== -->
@@ -258,6 +238,9 @@
         </div>
 
     </div>
+
+    <!-- ===== TOAST ===== -->
+    <div class="toast" id="toast"></div>
 
     <!-- ===== AUDIO ELEMENTS ===== -->
     <audio id="clickSound" preload="auto">
