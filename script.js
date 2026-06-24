@@ -8,6 +8,8 @@ window.addEventListener('load', () => {
         updateTime();
         setInterval(updateTime, 1000);
         showToast('💕 Welcome to Love Suite!');
+        // Auto-calculate on load
+        setTimeout(calculateByName, 500);
     }, 2800);
 });
 
@@ -19,14 +21,16 @@ function updateTime() {
 }
 
 // ============================================
-// THEME SYSTEM
+// THEME SYSTEM - FIXED
 // ============================================
 const themes = ['default', 'blue', 'green', 'purple', 'gold'];
 let currentThemeIndex = 0;
 
-document.getElementById('themeToggle').addEventListener('click', () => {
+document.getElementById('themeToggle').addEventListener('click', function(e) {
+    e.preventDefault();
     currentThemeIndex = (currentThemeIndex + 1) % themes.length;
     const theme = themes[currentThemeIndex];
+    
     if (theme === 'default') {
         document.documentElement.removeAttribute('data-theme');
         showToast('🎨 Theme: Default Pink');
@@ -57,12 +61,7 @@ function playSound(type) {
 // TOAST NOTIFICATION
 // ============================================
 function showToast(message, duration = 2500) {
-    let toast = document.querySelector('.toast');
-    if (!toast) {
-        toast = document.createElement('div');
-        toast.className = 'toast';
-        document.body.appendChild(toast);
-    }
+    const toast = document.getElementById('toast');
     toast.textContent = message;
     toast.classList.add('show');
     clearTimeout(toast._timer);
@@ -70,38 +69,70 @@ function showToast(message, duration = 2500) {
 }
 
 // ============================================
-// NAVIGATION
+// NAVIGATION - FIXED
 // ============================================
-document.querySelectorAll('.menu-btn, .nav-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-        const screen = btn.dataset.screen;
+// Menu buttons (Home screen)
+document.querySelectorAll('.menu-btn').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        const screen = this.dataset.screen;
         if (screen) {
             playSound('click');
             navigateTo(screen);
-            // Update active nav
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            document.querySelector(`.nav-btn[data-screen="${screen}"]`)?.classList.add('active');
+            updateNavButtons(screen);
         }
     });
 });
 
+// Nav buttons (Bottom)
+document.querySelectorAll('.nav-btn').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        const screen = this.dataset.screen;
+        if (screen) {
+            playSound('click');
+            navigateTo(screen);
+            updateNavButtons(screen);
+        }
+    });
+});
+
+// Back buttons
 document.querySelectorAll('.back-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', function(e) {
+        e.preventDefault();
         playSound('click');
         navigateTo('home');
-        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-        document.querySelector('.nav-btn[data-screen="home"]')?.classList.add('active');
+        updateNavButtons('home');
     });
 });
 
 function navigateTo(screenId) {
+    // Hide all screens
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-
+    
+    // Show target screen
     if (screenId === 'home') {
         document.getElementById('homeScreen').classList.add('active');
     } else {
         const target = document.getElementById('screen-' + screenId);
-        if (target) target.classList.add('active');
+        if (target) {
+            target.classList.add('active');
+        }
+    }
+    
+    // Scroll to top
+    const scrollable = document.getElementById('scrollableContent');
+    if (scrollable) {
+        scrollable.scrollTop = 0;
+    }
+}
+
+function updateNavButtons(screenId) {
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    const activeBtn = document.querySelector(`.nav-btn[data-screen="${screenId}"]`);
+    if (activeBtn) {
+        activeBtn.classList.add('active');
     }
 }
 
@@ -126,7 +157,7 @@ function startHeartRain(count = 30) {
 }
 
 // ============================================
-// LOVE MESSAGES DATABASE
+// LOVE MESSAGES
 // ============================================
 const loveMessages = {
     high: [
@@ -179,14 +210,28 @@ function getSubMessage(percent, type) {
 }
 
 // ============================================
-// SHARE FUNCTION
+// SHARE FUNCTION - FIXED
 // ============================================
 function shareResult(type) {
-    const resultBox = document.getElementById('result' + type.charAt(0).toUpperCase() + type.slice(1));
-    const percent = resultBox.querySelector('.result-percent')?.textContent || '0%';
-    const message = resultBox.querySelector('.result-message')?.textContent || 'Love is beautiful!';
+    const resultId = 'result' + type.charAt(0).toUpperCase() + type.slice(1);
+    const resultBox = document.getElementById(resultId);
+    if (!resultBox) {
+        showToast('⚠️ Please calculate first!');
+        return;
+    }
     
-    // Get names/inputs based on type
+    const percentEl = resultBox.querySelector('.result-percent');
+    const messageEl = resultBox.querySelector('.result-message');
+    
+    if (!percentEl || percentEl.textContent === '0%') {
+        showToast('⚠️ Please calculate first!');
+        return;
+    }
+    
+    const percent = percentEl.textContent;
+    const message = messageEl ? messageEl.textContent : 'Love is beautiful!';
+    
+    // Get names based on type
     let name1 = '', name2 = '';
     if (type === 'name') {
         name1 = document.getElementById('name1').value || '???';
@@ -201,10 +246,8 @@ function shareResult(type) {
         name1 = document.getElementById('mobile1').value || '???';
         name2 = document.getElementById('mobile2').value || '???';
     } else if (type === 'dob') {
-        const d1 = document.getElementById('dob1').value || '???';
-        const d2 = document.getElementById('dob2').value || '???';
-        name1 = d1;
-        name2 = d2;
+        name1 = document.getElementById('dob1').value || '???';
+        name2 = document.getElementById('dob2').value || '???';
     }
 
     const shareText = `💕 Love Calculator Result 💕\n\n${name1} ❤️ ${name2}\nLove Score: ${percent}\n${message}\n\n✨ Made with Love ❤️`;
@@ -219,7 +262,13 @@ function shareResult(type) {
             showToast('📋 Result copied to clipboard!');
         }).catch(() => {
             // Fallback
-            prompt('Copy this result:', shareText);
+            const textarea = document.createElement('textarea');
+            textarea.value = shareText;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            showToast('📋 Result copied!');
         });
     }
     playSound('click');
@@ -237,39 +286,41 @@ function generatePercent(input1, input2) {
         hash = (hash * 31 + combined.charCodeAt(i)) % 1000;
     }
     let percent = (hash % 60) + 25;
-
-    // Bonus for matching characters
     const common = [...input1.toUpperCase()].filter(ch => input2.toUpperCase().includes(ch)).length;
     percent = Math.min(percent + Math.min(common * 2, 15), 99);
-
     return percent;
 }
 
-function showResult(resultId, percent, message, subMessage, showShare = true) {
+function showResult(resultId, percent, message, subMessage) {
     const box = document.getElementById(resultId);
     if (!box) return;
 
-    // Get current values for share
     box.classList.remove('pop');
-    setTimeout(() => {
-        box.innerHTML = `
-            <div class="result-percent">${percent}%</div>
-            <div class="result-message">${message}</div>
-            <div class="result-sub">${subMessage}</div>
-            ${showShare ? `<button class="share-result-btn" onclick="shareResult('${resultId.replace('result', '').toLowerCase()}')">
-                <i class="fas fa-share-alt"></i> Share Result
-            </button>` : ''}
-        `;
-        box.classList.add('pop');
-    }, 100);
+    // Force reflow
+    void box.offsetWidth;
+    
+    const shareBtn = `<button class="share-result-btn" onclick="shareResult('${resultId.replace('result', '').toLowerCase()}')">
+        <i class="fas fa-share-alt"></i> Share Result
+    </button>`;
+    
+    box.innerHTML = `
+        <div class="result-percent">${percent}%</div>
+        <div class="result-message">${message}</div>
+        <div class="result-sub">${subMessage}</div>
+        ${percent > 0 ? shareBtn : ''}
+    `;
+    
+    box.classList.add('pop');
 
     // Play sounds
-    playSound('result');
-    if (percent >= 70) {
-        setTimeout(() => playSound('love'), 300);
-        startHeartRain(40);
-    } else if (percent >= 40) {
-        startHeartRain(20);
+    if (percent > 0) {
+        playSound('result');
+        if (percent >= 70) {
+            setTimeout(() => playSound('love'), 300);
+            startHeartRain(40);
+        } else if (percent >= 40) {
+            startHeartRain(20);
+        }
     }
 }
 
@@ -279,14 +330,14 @@ function calculateByName() {
     const n2 = document.getElementById('name2').value.trim();
 
     if (!n1 || !n2) {
-        showResult('resultName', 0, '⚠️ Please enter both names!', '💕 Love needs two hearts 💕', false);
+        showResult('resultName', 0, '⚠️ Please enter both names!', '💕 Love needs two hearts 💕');
         return;
     }
 
     const percent = generatePercent(n1, n2);
     const message = getLoveMessage(percent);
     const sub = getSubMessage(percent, 'name');
-    showResult('resultName', percent, message, sub, true);
+    showResult('resultName', percent, message, sub);
 }
 
 // ----- 2. LOVE BY DOB -----
@@ -295,7 +346,7 @@ function calculateByDOB() {
     const d2 = document.getElementById('dob2').value;
 
     if (!d1 || !d2) {
-        showResult('resultDob', 0, '⚠️ Please select both dates!', '🎂 Choose your birth dates', false);
+        showResult('resultDob', 0, '⚠️ Please select both dates!', '🎂 Choose your birth dates');
         return;
     }
 
@@ -313,7 +364,7 @@ function calculateByDOB() {
 
     const message = getLoveMessage(percent);
     const sub = getSubMessage(percent, 'dob');
-    showResult('resultDob', percent, message, sub, true);
+    showResult('resultDob', percent, message, sub);
 }
 
 // ----- 3. FRIENDSHIP -----
@@ -322,14 +373,14 @@ function calculateFriendship() {
     const f2 = document.getElementById('friend2').value.trim();
 
     if (!f1 || !f2) {
-        showResult('resultFriendship', 0, '⚠️ Enter both names!', '🤝 Friendship needs two!', false);
+        showResult('resultFriendship', 0, '⚠️ Enter both names!', '🤝 Friendship needs two!');
         return;
     }
 
     const percent = generatePercent(f1, f2);
     const message = getLoveMessage(percent);
     const sub = getSubMessage(percent, 'friendship');
-    showResult('resultFriendship', percent, message, sub, true);
+    showResult('resultFriendship', percent, message, sub);
 }
 
 // ----- 4. MARRIAGE -----
@@ -338,14 +389,14 @@ function calculateMarriage() {
     const m2 = document.getElementById('marry2').value.trim();
 
     if (!m1 || !m2) {
-        showResult('resultMarriage', 0, '⚠️ Enter both names!', '💍 Marriage needs two souls!', false);
+        showResult('resultMarriage', 0, '⚠️ Enter both names!', '💍 Marriage needs two souls!');
         return;
     }
 
     const percent = generatePercent(m1, m2);
     const message = getLoveMessage(percent);
     const sub = getSubMessage(percent, 'marriage');
-    showResult('resultMarriage', percent, message, sub, true);
+    showResult('resultMarriage', percent, message, sub);
 }
 
 // ----- 5. LOVE BY MOBILE -----
@@ -354,23 +405,23 @@ function calculateByMobile() {
     const m2 = document.getElementById('mobile2').value.trim();
 
     if (!m1 || !m2) {
-        showResult('resultMobile', 0, '⚠️ Enter both numbers!', '📱 Mobile love needs digits!', false);
+        showResult('resultMobile', 0, '⚠️ Enter both numbers!', '📱 Mobile love needs digits!');
         return;
     }
 
     if (m1.length < 5 || m2.length < 5) {
-        showResult('resultMobile', 0, '⚠️ Enter valid numbers!', '📱 Minimum 5 digits please', false);
+        showResult('resultMobile', 0, '⚠️ Enter valid numbers!', '📱 Minimum 5 digits please');
         return;
     }
 
     const percent = generatePercent(m1, m2);
     const message = getLoveMessage(percent);
     const sub = getSubMessage(percent, 'mobile');
-    showResult('resultMobile', percent, message, sub, true);
+    showResult('resultMobile', percent, message, sub);
 }
 
 // ============================================
-// KEYBOARD SUPPORT (Enter key)
+// KEYBOARD SUPPORT
 // ============================================
 document.querySelectorAll('.input-group input').forEach(input => {
     input.addEventListener('keydown', (e) => {
@@ -389,22 +440,12 @@ document.querySelectorAll('.input-group input').forEach(input => {
 });
 
 // ============================================
-// MOBILE NUMBER AUTO-FORMAT
+// MOBILE NUMBER FORMAT
 // ============================================
 document.querySelectorAll('input[type="tel"]').forEach(input => {
     input.addEventListener('input', () => {
         input.value = input.value.replace(/\D/g, '').slice(0, 10);
     });
-});
-
-// ============================================
-// AUTO-CALCULATE ON LOAD WITH DEFAULT VALUES
-// ============================================
-window.addEventListener('DOMContentLoaded', () => {
-    // Set default values for demo
-    document.getElementById('name1').value = 'JAMES';
-    document.getElementById('name2').value = 'CHARLOTTE';
-    setTimeout(calculateByName, 500);
 });
 
 console.log('💕 Love Calculator Suite v3.0 Loaded! Made with ❤️');
