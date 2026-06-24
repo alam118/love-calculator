@@ -1,150 +1,301 @@
-// ===== DOM ELEMENTS =====
-const name1 = document.getElementById('name1');
-const name2 = document.getElementById('name2');
-const calculateBtn = document.getElementById('calculateBtn');
-const progressCircle = document.getElementById('progressCircle');
-const percentText = document.getElementById('percentText');
-const loveMessage = document.getElementById('loveMessage');
-const loveSubMessage = document.getElementById('loveSubMessage');
-const shareBtn = document.getElementById('shareBtn');
-const resetBtn = document.getElementById('resetBtn');
-const quoteText = document.getElementById('quoteText');
+// ============================================
+// SPLASH SCREEN
+// ============================================
+window.addEventListener('load', () => {
+    setTimeout(() => {
+        document.getElementById('splashScreen').classList.add('hide');
+        document.getElementById('mainApp').style.display = 'block';
+        updateTime();
+        setInterval(updateTime, 1000);
+    }, 2800);
+});
 
-// ===== LOVE QUOTES =====
-const quotes = [
-    '💬 "Love is when the other person\'s happiness is more important than your own."',
-    '💬 "The best thing to hold onto in life is each other."',
-    '💬 "Love is not about how many days together, but how much you love each other every day."',
-    '💬 "True love is finding someone who knows all your flaws and still loves you more."',
-    '💬 "You don\'t love someone for their looks, or their clothes, or their car. You love them because they sing a song only your heart can hear."',
-    '💬 "Love is composed of a single soul inhabiting two bodies."',
-    '💬 "Where there is love there is life."',
-    '💬 "Love is the bridge between two hearts."',
-];
+function updateTime() {
+    const now = new Date();
+    document.getElementById('currentTime').textContent =
+        now.getHours().toString().padStart(2, '0') + ':' +
+        now.getMinutes().toString().padStart(2, '0');
+}
 
-// ===== RANDOM QUOTE ON LOAD =====
-quoteText.textContent = quotes[Math.floor(Math.random() * quotes.length)];
+// ============================================
+// SOUND SYSTEM
+// ============================================
+function playSound(type) {
+    try {
+        let audio;
+        if (type === 'click') audio = document.getElementById('clickSound');
+        else if (type === 'result') audio = document.getElementById('resultSound');
+        else if (type === 'love') audio = document.getElementById('loveSound');
+        if (audio) {
+            audio.currentTime = 0;
+            audio.play().catch(() => {});
+        }
+    } catch (e) {}
+}
 
-// ===== LOVE CALCULATOR LOGIC =====
-function calculateLove(name1Val, name2Val) {
-    if (!name1Val || !name2Val) {
-        return { percent: 0, message: '💕 Enter both names!', subMessage: 'Type names to see the magic ✨' };
+// ============================================
+// NAVIGATION
+// ============================================
+document.querySelectorAll('.menu-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        playSound('click');
+        const screen = btn.dataset.screen;
+        navigateTo(screen);
+    });
+});
+
+document.querySelectorAll('.back-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        playSound('click');
+        const target = btn.dataset.back;
+        navigateTo(target);
+    });
+});
+
+function navigateTo(screenId) {
+    // Hide all screens
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+
+    if (screenId === 'home') {
+        document.getElementById('homeScreen').classList.add('active');
+    } else {
+        const target = document.getElementById('screen-' + screenId);
+        if (target) target.classList.add('active');
     }
+}
 
-    // Simple but fun algorithm
-    const combined = (name1Val + name2Val).toUpperCase();
+// ============================================
+// HEART RAIN EFFECT
+// ============================================
+function startHeartRain(count = 30) {
+    const emojis = ['❤️', '💕', '💖', '💗', '💝', '✨'];
+    for (let i = 0; i < count; i++) {
+        setTimeout(() => {
+            const heart = document.createElement('div');
+            heart.className = 'heart-rain';
+            heart.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.fontSize = (16 + Math.random() * 24) + 'px';
+            heart.style.animationDuration = (3 + Math.random() * 4) + 's';
+            heart.style.opacity = 0.6 + Math.random() * 0.4;
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 7000);
+        }, i * 80);
+    }
+}
+
+// ============================================
+// LOVE MESSAGES DATABASE
+// ============================================
+const loveMessages = {
+    high: [
+        '🔥 Incredible Love! You are soulmates!',
+        '💖 Perfect Match! Made for each other!',
+        '🌟 True Love! A match made in heaven!',
+        '💕 Eternal Love! Together forever!',
+        '✨ Magical Connection! Destiny brought you together!'
+    ],
+    mid: [
+        '💗 Great Compatibility! Love is growing!',
+        '🌹 Beautiful Bond! Keep nurturing it!',
+        '💞 Strong Connection! You two are special!',
+        '🌸 Lovely Pair! Love is blossoming!',
+        '🌺 Wonderful Chemistry! You complement each other!'
+    ],
+    low: [
+        '💫 Interesting Match! Opposites attract!',
+        '🌈 Give it time! Love can grow!',
+        '🌙 Mysterious Connection! Explore it!',
+        '⭐ Potential is there! Nurture it!',
+        '🍀 Lucky to have found each other!'
+    ]
+};
+
+function getLoveMessage(percent) {
+    let list;
+    if (percent >= 70) list = loveMessages.high;
+    else if (percent >= 40) list = loveMessages.mid;
+    else list = loveMessages.low;
+    return list[Math.floor(Math.random() * list.length)];
+}
+
+function getSubMessage(percent, type) {
+    const subs = {
+        name: ['💕 Love is in the air...', '💑 Perfect match!', '❤️ Heartbeats sync!'],
+        dob: ['🌟 Destiny aligned!', '🎂 Stars match!', '💫 Written in the stars!'],
+        friendship: ['🤗 Besties forever!', '🤝 Friends like family!', '💪 Unbreakable bond!'],
+        marriage: ['💍 Happily ever after!', '👰🤵 Perfect wedding!', '💞 Soulmates forever!'],
+        mobile: ['📱 Digital destiny!', '💖 Connected hearts!', '✨ Cosmic connection!']
+    };
+    const list = subs[type] || subs.name;
+    return list[Math.floor(Math.random() * list.length)];
+}
+
+// ============================================
+// CALCULATOR FUNCTIONS
+// ============================================
+
+function generatePercent(input1, input2) {
+    if (!input1 || !input2) return 0;
+    const combined = (input1 + input2).toUpperCase();
     let hash = 0;
     for (let i = 0; i < combined.length; i++) {
         hash = (hash * 31 + combined.charCodeAt(i)) % 1000;
     }
-    // Base percent from hash
-    let percent = (hash % 71) + 20; // 20% to 90%
+    let percent = (hash % 60) + 25;
 
-    // Bonus based on length and common letters
-    const commonLetters = [...name1Val.toUpperCase()].filter(ch => name2Val.toUpperCase().includes(ch)).length;
-    const bonus = Math.min(commonLetters * 2, 10);
-    percent = Math.min(percent + bonus, 99);
+    // Bonus for matching characters
+    const common = [...input1.toUpperCase()].filter(ch => input2.toUpperCase().includes(ch)).length;
+    percent = Math.min(percent + Math.min(common * 2, 15), 99);
 
-    // Get message based on percent
-    let message, subMessage;
-    if (percent >= 80) {
-        message = '🔥 Incredible Love! Together you are invincible!';
-        subMessage = '💞 A match made in heaven!';
-    } else if (percent >= 60) {
-        message = '💖 Elevated Compatibility! Solid relationship and deep love!';
-        subMessage = '🌟 You two are a beautiful couple!';
+    return percent;
+}
+
+function showResult(resultId, percent, message, subMessage) {
+    const box = document.getElementById(resultId);
+    if (!box) return;
+
+    // Animate result
+    box.classList.remove('pop');
+    setTimeout(() => {
+        box.innerHTML = `
+            <div class="result-percent">${percent}%</div>
+            <div class="result-message">${message}</div>
+            <div class="result-sub">${subMessage}</div>
+        `;
+        box.classList.add('pop');
+    }, 100);
+
+    // Play sounds
+    playSound('result');
+    if (percent >= 70) {
+        setTimeout(() => playSound('love'), 300);
+        startHeartRain(40);
     } else if (percent >= 40) {
-        message = '💕 Good Connection! There is potential here!';
-        subMessage = '🌱 Nurture this love, it can grow!';
-    } else if (percent >= 20) {
-        message = '💫 Interesting Match! Opposites can attract!';
-        subMessage = '✨ Give it time, love may blossom!';
-    } else {
-        message = '💔 Not a perfect match, but love is unpredictable!';
-        subMessage = '🌈 Sometimes the best love stories are unexpected!';
-    }
-
-    return { percent, message, subMessage };
-}
-
-// ===== UPDATE UI =====
-function updateResult(percent, message, subMessage) {
-    // Update circle
-    const circumference = 314.16;
-    const offset = circumference - (percent / 100) * circumference;
-    progressCircle.style.strokeDashoffset = offset;
-
-    // Update text
-    percentText.textContent = percent + '%';
-    loveMessage.textContent = message;
-    loveSubMessage.textContent = subMessage;
-
-    // Color change based on percent
-    let color;
-    if (percent >= 80) color = '#e91e63';
-    else if (percent >= 60) color = '#f06292';
-    else if (percent >= 40) color = '#ec407a';
-    else if (percent >= 20) color = '#f48fb1';
-    else color = '#b0bec5';
-
-    progressCircle.style.stroke = color;
-    percentText.style.fill = color;
-}
-
-// ===== CALCULATE =====
-function handleCalculate() {
-    const val1 = name1.value.trim() || 'UNKNOWN';
-    const val2 = name2.value.trim() || 'UNKNOWN';
-    const { percent, message, subMessage } = calculateLove(val1, val2);
-    updateResult(percent, message, subMessage);
-}
-
-// ===== SHARE =====
-function handleShare() {
-    const p = percentText.textContent;
-    const msg = loveMessage.textContent;
-    const n1 = name1.value.trim() || '???';
-    const n2 = name2.value.trim() || '???';
-
-    const shareText = `💕 Love Calculator Result 💕\n\n${n1} ❤️ ${n2}\nLove Score: ${p}\n${msg}\n\nMade with ❤️`;
-
-    if (navigator.share) {
-        navigator.share({
-            title: 'Love Calculator Result',
-            text: shareText,
-        }).catch(() => {});
-    } else {
-        navigator.clipboard.writeText(shareText).then(() => {
-            alert('📋 Result copied to clipboard! Share it with your love!');
-        }).catch(() => {
-            // Fallback
-            prompt('Copy this result:', shareText);
-        });
+        startHeartRain(20);
     }
 }
 
-// ===== RESET =====
-function handleReset() {
-    name1.value = '';
-    name2.value = '';
-    updateResult(0, '💕 Enter both names!', 'Type names to see the magic ✨');
-    progressCircle.style.stroke = '#e91e63';
-    percentText.style.fill = '#333';
-    // Random quote
-    quoteText.textContent = quotes[Math.floor(Math.random() * quotes.length)];
+// ----- 1. LOVE BY NAME -----
+function calculateByName() {
+    const n1 = document.getElementById('name1').value.trim();
+    const n2 = document.getElementById('name2').value.trim();
+
+    if (!n1 || !n2) {
+        showResult('resultName', 0, '⚠️ Please enter both names!', '💕 Love needs two hearts 💕');
+        return;
+    }
+
+    const percent = generatePercent(n1, n2);
+    const message = getLoveMessage(percent);
+    const sub = getSubMessage(percent, 'name');
+    showResult('resultName', percent, message, sub);
 }
 
-// ===== EVENT LISTENERS =====
-calculateBtn.addEventListener('click', handleCalculate);
+// ----- 2. LOVE BY DOB -----
+function calculateByDOB() {
+    const d1 = document.getElementById('dob1').value;
+    const d2 = document.getElementById('dob2').value;
 
-// Enter key support
-name1.addEventListener('keydown', (e) => { if (e.key === 'Enter') handleCalculate(); });
-name2.addEventListener('keydown', (e) => { if (e.key === 'Enter') handleCalculate(); });
+    if (!d1 || !d2) {
+        showResult('resultDob', 0, '⚠️ Please select both dates!', '🎂 Choose your birth dates');
+        return;
+    }
 
-shareBtn.addEventListener('click', handleShare);
-resetBtn.addEventListener('click', handleReset);
+    const date1 = new Date(d1);
+    const date2 = new Date(d2);
 
-// ===== AUTO CALCULATE ON LOAD WITH DEFAULT VALUES =====
-window.addEventListener('DOMContentLoaded', () => {
-    handleCalculate();
+    // Calculate difference in days
+    const diff = Math.abs(date2 - date1);
+    const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
+
+    // Percent based on day difference (lower difference = higher love)
+    let percent;
+    if (days < 365) percent = 85 + Math.floor(Math.random() * 14);
+    else if (days < 1095) percent = 65 + Math.floor(Math.random() * 20);
+    else if (days < 3650) percent = 45 + Math.floor(Math.random() * 20);
+    else percent = 25 + Math.floor(Math.random() * 25);
+
+    percent = Math.min(percent, 99);
+
+    const message = getLoveMessage(percent);
+    const sub = getSubMessage(percent, 'dob');
+    showResult('resultDob', percent, message, sub);
+}
+
+// ----- 3. FRIENDSHIP -----
+function calculateFriendship() {
+    const f1 = document.getElementById('friend1').value.trim();
+    const f2 = document.getElementById('friend2').value.trim();
+
+    if (!f1 || !f2) {
+        showResult('resultFriendship', 0, '⚠️ Enter both names!', '🤝 Friendship needs two!');
+        return;
+    }
+
+    const percent = generatePercent(f1, f2);
+    const message = getLoveMessage(percent);
+    const sub = getSubMessage(percent, 'friendship');
+    showResult('resultFriendship', percent, message, sub);
+}
+
+// ----- 4. MARRIAGE -----
+function calculateMarriage() {
+    const m1 = document.getElementById('marry1').value.trim();
+    const m2 = document.getElementById('marry2').value.trim();
+
+    if (!m1 || !m2) {
+        showResult('resultMarriage', 0, '⚠️ Enter both names!', '💍 Marriage needs two souls!');
+        return;
+    }
+
+    const percent = generatePercent(m1, m2);
+    const message = getLoveMessage(percent);
+    const sub = getSubMessage(percent, 'marriage');
+    showResult('resultMarriage', percent, message, sub);
+}
+
+// ----- 5. LOVE BY MOBILE -----
+function calculateByMobile() {
+    const m1 = document.getElementById('mobile1').value.trim();
+    const m2 = document.getElementById('mobile2').value.trim();
+
+    if (!m1 || !m2) {
+        showResult('resultMobile', 0, '⚠️ Enter both numbers!', '📱 Mobile love needs digits!');
+        return;
+    }
+
+    if (m1.length < 5 || m2.length < 5) {
+        showResult('resultMobile', 0, '⚠️ Enter valid numbers!', '📱 Minimum 5 digits please');
+        return;
+    }
+
+    const percent = generatePercent(m1, m2);
+    const message = getLoveMessage(percent);
+    const sub = getSubMessage(percent, 'mobile');
+    showResult('resultMobile', percent, message, sub);
+}
+
+// ============================================
+// KEYBOARD SUPPORT (Enter key)
+// ============================================
+document.querySelectorAll('.input-group input').forEach(input => {
+    input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            const screen = input.closest('.screen');
+            if (screen) {
+                const id = screen.id;
+                if (id === 'screen-name') calculateByName();
+                else if (id === 'screen-dob') calculateByDOB();
+                else if (id === 'screen-friendship') calculateFriendship();
+                else if (id === 'screen-marriage') calculateMarriage();
+                else if (id === 'screen-mobile') calculateByMobile();
+            }
+        }
+    });
 });
+
+// ============================================
+// MOBILE NUMBER AUTO-FORMAT
+// ============================================
+document.querySelectorAll('input[type="tel"]').forEach(input =>
